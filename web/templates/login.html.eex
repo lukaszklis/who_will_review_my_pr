@@ -1,0 +1,11 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title><%= @title %></title>
+  <link rel="shortcut icon" href="/static/favicon.ico" />
+</head>
+<body>
+  <h3><%= @title %></h3>
+  <a href=<%= @github_oauth_uri %> > Login with GitHub </a>
+</body>
+</html>

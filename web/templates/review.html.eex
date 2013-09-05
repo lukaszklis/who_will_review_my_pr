@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title><%= @title %></title>
+  <link rel="shortcut icon" href="/static/favicon.ico" />
+</head>
+<body>
+  <h3><%= "Done!" %></h3>
+  <p><%= "@#{@reviewer_name} was asked to take a look at your pull request <a href=#{@pull_request}>#{@pull_request}</a>"%></p>
+  <a href="/">once again</a>
+  <a href="/logout">Logout</a>
+</body>
+</html>

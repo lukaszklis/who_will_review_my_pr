@@ -8,4 +8,5 @@ defmodule HomeTest do
     conn = get("/")
     assert conn.status == 200
   end
+
 end
