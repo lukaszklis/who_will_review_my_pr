@@ -1,5 +1,3 @@
-Code.require_file "../../config.ex", __FILE__
-
 defmodule ApplicationRouter do
   use Dynamo.Router
 
