@@ -1,13 +1,13 @@
 defmodule Config do
   def client_secret do
-    "5925a1987b5f345c4eb32fb101874e59d1871607"
+    System.get_env("GITHUB_CSECRET") || "the github secret"
   end
 
   def client_id do
-    "d0a6227ca3641fe9bc00"
+    System.get_env("GITHUB_CID") || "the github client id"
   end
 
   def secret do
-    "sdgfwer13tfewf"
+    System.get_env("APP_SECRET") || "application secret"
   end
 end
