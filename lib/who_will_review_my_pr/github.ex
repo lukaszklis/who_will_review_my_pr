@@ -22,7 +22,8 @@ defmodule Github do
   def random_reviewer(pull_request, access_token) do
     col = collaborators(pull_request, access_token)
     con = contributors(pull_request, access_token)
-    Enum.take(Enum.shuffle(col),1)
+    in_both = members_of_both(con, col)
+    Enum.take(Enum.shuffle(in_both),1)
   end
 
   def ask_to_review(pull_request, reviewer, access_token) do
@@ -32,6 +33,11 @@ defmodule Github do
     resp = System.cmd(command)
     IO.puts(resp)
     resp
+  end
+
+  defp members_of_both(list1, list2) do
+    [shorter, longer] = if ListDict.size(list1) < ListDict.size(list2), do: [list1,list2], else: [list2,list1]
+    Enum.filter(shorter, fn(x) -> Enum.member?(longer, x) end)
   end
 
   defp collaborators(pull_request, access_token) do
