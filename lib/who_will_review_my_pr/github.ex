@@ -28,7 +28,7 @@ defmodule Github do
 
   def ask_to_review(pull_request, reviewer, access_token) do
     [_, _, _, owner, repo, _, number] = String.split(pull_request, "/")
-    comment = "Hey @#{reviewer} would you have time to review this?"
+    comment = "Hey @#{reviewer} would you have time to review this? [/®](http://who-will-review-my-pr.herokuapp.com)"
     command = "curl -v -H 'Authorization: token #{access_token}' -XPOST https://api.github.com/repos/#{owner}/#{repo}/issues/#{number}/comments -d '{ \"body\": \"#{comment}\" }'"
     resp = System.cmd(command)
     IO.puts(resp)
