@@ -1,5 +1,10 @@
 defmodule Github do
+
+  # TODO: get rid of curl
+
   def oauth_uri do
+    # TODO: implement redirect_uri & state
+    # http://developer.github.com/v3/oauth/#web-application-flow
     "https://github.com/login/oauth/authorize?client_id=#{Config.client_id}&scope=repo"
   end
 
@@ -20,16 +25,23 @@ defmodule Github do
   end
 
   def random_reviewer(pull_request, access_token) do
+    # To avoid Enum.shuffle to return one and the same result
+    :random.seed(:erlang.now)
+
     col = collaborators(pull_request, access_token)
     con = contributors(pull_request, access_token)
+    if ListDict.size(con) == 0, do: con = contributors(pull_request, access_token)
     in_both = members_of_both(con, col)
-    Enum.take(Enum.shuffle(in_both),1)
+    IO.puts(inspect(in_both))
+    shuffled = Enum.shuffle(in_both)
+    IO.puts(inspect(shuffled))
+    Enum.take(shuffled,1)
   end
 
   def ask_to_review(pull_request, reviewer, access_token) do
     [_, _, _, owner, repo, _, number] = String.split(pull_request, "/")
     comment = "Hey @#{reviewer} would you have time to review this? [/®](http://who-will-review-my-pr.herokuapp.com)"
-    command = "curl -v -H 'Authorization: token #{access_token}' -XPOST https://api.github.com/repos/#{owner}/#{repo}/issues/#{number}/comments -d '{ \"body\": \"#{comment}\" }'"
+    command = "curl -H 'Authorization: token #{access_token}' -XPOST https://api.github.com/repos/#{owner}/#{repo}/issues/#{number}/comments -d '{ \"body\": \"#{comment}\" }' 2> /dev/null"
     resp = System.cmd(command)
     IO.puts(resp)
     resp
@@ -41,7 +53,8 @@ defmodule Github do
   end
 
   defp collaborators(pull_request, access_token) do
-    [_, _, _, owner, repo, _, number] = String.split(pull_request, "/")
+    [_, _, _, owner, repo, _, _] = String.split(pull_request, "/")
+
     command = "curl -H 'Authorization: token #{access_token}' -XGET https://api.github.com/repos/#{owner}/#{repo}/collaborators 2> /dev/null"
     resp = System.cmd(command)
     {:ok, resp } = JSON.decode(resp)
@@ -49,7 +62,7 @@ defmodule Github do
   end
 
   defp contributors(pull_request, access_token) do
-    [_, _, _, owner, repo, _, number] = String.split(pull_request, "/")
+    [_, _, _, owner, repo, _, _] = String.split(pull_request, "/")
     command = "curl -H 'Authorization: token #{access_token}' -XGET https://api.github.com/repos/#{owner}/#{repo}/stats/contributors 2> /dev/null"
     resp = System.cmd(command)
     {:ok, resp } = JSON.decode(resp)
