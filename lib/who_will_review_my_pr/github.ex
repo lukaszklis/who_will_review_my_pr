@@ -25,15 +25,12 @@ defmodule Github do
   end
 
   def random_reviewer(pull_request, access_token) do
-    # To avoid Enum.shuffle to return one and the same result
-    :random.seed(:erlang.now)
-
     col = collaborators(pull_request, access_token)
     con = contributors(pull_request, access_token)
     if ListDict.size(con) == 0, do: con = contributors(pull_request, access_token)
-    in_both = members_of_both(con, col)
+    in_both = Cust.members_of_both(con, col)
     IO.puts(inspect(in_both))
-    shuffled = Enum.shuffle(in_both)
+    shuffled = Cust.shuffle(in_both)
     IO.puts(inspect(shuffled))
     Enum.take(shuffled,1)
   end
@@ -45,11 +42,6 @@ defmodule Github do
     resp = System.cmd(command)
     IO.puts(resp)
     resp
-  end
-
-  defp members_of_both(list1, list2) do
-    [shorter, longer] = if ListDict.size(list1) < ListDict.size(list2), do: [list1,list2], else: [list2,list1]
-    Enum.filter(shorter, fn(x) -> Enum.member?(longer, x) end)
   end
 
   defp collaborators(pull_request, access_token) do
