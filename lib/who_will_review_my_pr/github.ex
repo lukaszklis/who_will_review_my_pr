@@ -13,7 +13,7 @@ defmodule Github do
     client_secret = Config.client_secret
     command = "curl -XPOST 'https://github.com/login/oauth/access_token?client_id=#{client_id}&client_secret=#{client_secret}&code=#{code}' 2>/dev/null"
     response = System.cmd(command)
-    IO.puts(response)
+    Logger.debug(response)
     String.slice(response, 13, 40)
   end
 
@@ -29,9 +29,9 @@ defmodule Github do
     con = contributors(pull_request, access_token)
     if ListDict.size(con) == 0, do: con = contributors(pull_request, access_token)
     in_both = Cust.members_of_both(con, col)
-    IO.puts(inspect(in_both))
+    Logger.debug(inspect(in_both))
     shuffled = Cust.shuffle(in_both)
-    IO.puts(inspect(shuffled))
+    Logger.debug(inspect(shuffled))
     Enum.take(shuffled,1)
   end
 
@@ -40,7 +40,7 @@ defmodule Github do
     comment = "Hey @#{reviewer} would you have time to review this? [/®](http://who-will-review-my-pr.herokuapp.com)"
     command = "curl -H 'Authorization: token #{access_token}' -XPOST https://api.github.com/repos/#{owner}/#{repo}/issues/#{number}/comments -d '{ \"body\": \"#{comment}\" }' 2> /dev/null"
     resp = System.cmd(command)
-    IO.puts(resp)
+    Logger.debug(resp)
     resp
   end
 
