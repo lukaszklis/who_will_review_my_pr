@@ -3,7 +3,7 @@ defmodule CustTest do
 
   test "shuffle returns elemenst in different order" do
     list = ["red", "blue", "green"]
-    assert Cust.shuffle(list) != Cust.shuffle(list)
+    assert [list, list, list] != [Cust.shuffle(list), Cust.shuffle(list), Cust.shuffle(list)]
   end
 
   test "number_of_both returns elements that are members of both given lists" do
