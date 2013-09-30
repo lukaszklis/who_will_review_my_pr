@@ -25,9 +25,9 @@ defmodule Github do
     col = collaborators(pull_request, access_token)
     con = contributors(pull_request, access_token)
     if ListDict.size(con) == 0, do: con = contributors(pull_request, access_token)
-    in_both = Cust.members_of_both(con, col)
+    in_both = Common.members_of_both(con, col)
     Logger.debug(inspect(in_both))
-    shuffled = Cust.shuffle(in_both)
+    shuffled = Common.shuffle(in_both)
     Logger.debug(inspect(shuffled))
     Enum.take(shuffled,1)
   end

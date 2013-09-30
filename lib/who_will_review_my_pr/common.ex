@@ -1,4 +1,4 @@
-defmodule Cust do
+defmodule Common do
 
   def shuffle(list) do
     # To avoid Enum.shuffle to return one and the same result
