@@ -1,4 +1,4 @@
-# WhoWillReviewMyPr
+# WhoWillReviewMyPr [![Build Status](https://travis-ci.org/duksis/who_will_review_my_pr.png?branch=master)](https://travis-ci.org/duksis/who_will_review_my_pr)
 ===================
 
 http://who-will-review-my-pr.herokuapp.com
