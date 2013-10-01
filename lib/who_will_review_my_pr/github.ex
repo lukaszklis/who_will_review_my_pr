@@ -2,13 +2,13 @@ defmodule Github do
   def oauth_uri do
     # TODO: implement state
     # http://developer.github.com/v3/oauth/#web-application-flow
-    "https://github.com/login/oauth/authorize?client_id=#{Config.client_id}&scope=repo&redirect_uri=#{URI.encode(Config.root_url)}"
+    "https://github.com/login/oauth/authorize?client_id=#{Config.client_id}&scope=repo&redirect_uri=#{URI.encode(Config.root_url <> "/authenticate")}"
   end
 
   def authenticate(code) do
     client_id = Config.client_id
     client_secret = Config.client_secret
-    uri = "https://github.com/login/oauth/access_token?client_id=#{client_id}&client_secret=#{client_secret}&code=#{code}&redirect_uri=#{URI.encode(Config.root_url)}"
+    uri = "https://github.com/login/oauth/access_token?client_id=#{client_id}&client_secret=#{client_secret}&code=#{code}&redirect_uri=#{URI.encode(Config.root_url <> "/authenticate")}"
     response = HTTP.post(uri)
     Logger.debug(response)
     String.slice(response, 13, 40)
