@@ -18,7 +18,6 @@ defmodule ApplicationRouter do
     conn = conn.fetch(:session)
     access_token = get_session(conn, :access_token)
     if access_token === nil or String.length(access_token) !== 40 do
-      Logger.debug("#### from request")
       redirect(conn, to: "/login")
     else
       Logger.debug("#### from session:" <> access_token)
