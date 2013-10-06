@@ -10,10 +10,6 @@ defmodule HTTP do
     System.cmd("curl -H 'Authorization: token #{access_token}' -XPOST #{uri} -d '#{request_body}' 2> /dev/null")
   end
 
-  def get(uri) do
-    System.cmd("curl -XGET '#{uri}' 2>/dev/null")
-  end
-
   def get(access_token, uri) do
     System.cmd("curl -H 'Authorization: token #{access_token}' -XGET '#{uri}' 2>/dev/null")
   end
